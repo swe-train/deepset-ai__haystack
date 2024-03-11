@@ -112,11 +112,9 @@ def build_pipeline():
     pp.add_component(name="builder", instance=builder)
     pp.add_component(name="llm", instance=llm)
     pp.add_component(name="splitter", instance=splitter)
-    # pp.add_component(name="multiplexer", instance=Multiplexer(str))
 
     pp.connect("builder", "llm")
     pp.connect("llm", "splitter")
-    # pp.connect("splitter", "multiplexer.value")
 
     return pp
 
