@@ -1,9 +1,11 @@
 """
 **Description**
 
-Working with metadata filters is powerful and can boost performance quite a bit. However, this is often annoying for the users to set.
+Working with metadata filters is powerful and can boost performance quite a bit. However, this is often annoying for the
+ users to set.
 
-This RAG pipeline should take a regular text query and then, if the query contains attributes that relate to existing metadata fields in the index, add the according metadata filters to the further query execution.
+This RAG pipeline should take a regular text query and then, if the query contains attributes that relate to existing
+metadata fields in the index, add the according metadata filters to the further query execution.
 
 Example:
 
@@ -72,8 +74,11 @@ def main():
 
     documents = [
         Document(
-            content="top publications of Erick Mayer in 2012",
-            meta={"year": 2012, "topics": ["Alzheimers"], "author": "Erick Mayer"}),
+            content="top publications of Michael Butter in 2012",
+            meta={"year": 2012, "topics": ["Alzheimers"], "author": "Michael Butter"}),
+        Document(
+            content="top publications of Erick Mayer in 2013",
+            meta={"year": 2013, "topics": ["Alzheimers"], "author": "Erick Mayer"}),
     ]
     document_store = InMemoryDocumentStore(bm25_algorithm="BM25Plus")
     document_store.write_documents(documents=documents, policy=DuplicatePolicy.OVERWRITE)
@@ -87,7 +92,10 @@ def main():
     pipeline.connect("metadata_extractor.query", "retriever.query")
     pipeline.connect("metadata_extractor.filters", "retriever.filters")
 
-    pipeline.run(data={"metadata_extractor": {"query": "What were the top publications of Erick Mayer in 2012?"}})
+    query = "publications 2023 Alzheimers disease?"
+    metadata_fields = ["year", "author", "topics"]
+
+    pipeline.run(data={"metadata_extractor": {"query": query, "metadata_fields": metadata_fields}})
 
 
 

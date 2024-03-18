@@ -86,8 +86,8 @@ class LLMMetadataExtractor:
     @component.output_types(answers=Document)
     def run(self, document: Document):
         result = self.pipeline.run({'builder': {'document': document}})
-        inhabitants = result['llm']['replies']
-        document.meta["inhabitants"] = inhabitants if inhabitants.isdigit() else None
+        inhabitants = result['llm']['replies'][0]
+        document.meta["inhabitants"] = int(inhabitants) if inhabitants.isdigit() else None
         return {"answers": document}
 
 
