@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from haystack import Pipeline, component
 
 
@@ -53,4 +55,10 @@ class PipelineComponent:
             component.set_output_types(self, **kwargs)
 
     def run(self, **kwargs):
-        return self._pipeline_instance.run(**kwargs)
+        # split the inputs
+        inner_data = defaultdict(dict)
+        for name, value in kwargs.items():
+            component_name, input_name = name.split(":")
+            inner_data[component_name][input_name] = value
+
+        return self._pipeline_instance.run(data=inner_data)
