@@ -51,6 +51,7 @@ class OpenAPIServiceToFunctions:
             "anthropic": AnthropicLLMProvider(),
             "cohere": CohereLLMProvider(),
         }
+        default_provider = default_provider or "openai"
         if default_provider not in self.provider_map:
             raise ValueError(f"Default provider {default_provider} not found in provider map.")
         self.default_provider = default_provider or "openai"
